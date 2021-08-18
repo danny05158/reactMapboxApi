@@ -4,8 +4,7 @@ import App from './components/App';
 import Navbar from './components/Navbar';
 import { Provider } from 'react-redux'
 import store from './store/index';
-import './index.css';
-
+import './components/CSS/index.css';
 
 ReactDOM.render(
   <Provider store={store}>

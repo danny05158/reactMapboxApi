@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {displayStationsonMap}  from '../store/index';
-import './CSS/index.css';
 
 class Navbar extends Component {
 
