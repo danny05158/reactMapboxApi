@@ -1,10 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import axios from 'axios';
 
-const Map = () =>  {
+const Map = () => {
 
   const [stations, setStations] = useState([]);
 
@@ -13,17 +13,18 @@ const Map = () =>  {
     async function fetchData() {
      const { data } = await axios.get('https://developer.nrel.gov/api/alt-fuel-stations/v1.json?api_key=hFaHfjnF0JwKMVnhxQdQbYVBKJLI84ldJA5eTMlZ&state=IL&fuel_type=ELEC');
 
-     console.log('data', data)
+     console.log('data', data.fuel_stations)
 
      setStations(data.fuel_stations);
 
-      console.log('stations', stations)
     }
 
     fetchData();
   }, []);
 
   useEffect( () => {
+
+    console.log('stations', stations)
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnkwNTE1OCIsImEiOiJja3Ftb3VzNXgwZnEzMnVvODJnd2VtbXB1In0.Jaezz28sT9uSw-AAmDeJ7Q';
      const stylesName = 'mapbox/light-v9';
