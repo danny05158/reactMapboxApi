@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import Map from './components/Map';
 import Navbar from './components/Navbar';
 import { Provider } from 'react-redux'
 import store from './store/index';
@@ -9,7 +9,7 @@ import './components/CSS/index.css';
 ReactDOM.render(
   <Provider store={store}>
      <Navbar />
-    <App />
+    <Map />
   </Provider>,
   document.getElementById('root')
 );
