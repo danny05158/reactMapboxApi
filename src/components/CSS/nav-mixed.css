@@ -1,6 +1,18 @@
 .nav-mixed {
-  display: flex;
   background: hsl(0, 0%, 15%);
-  flex-wrap: wrap;
-  justify-content: space-between;
+  height: 50px;
+  height: 100%;
+  position: absolute;
+  left: 81%;
+  width: 100%;
+}
+
+.multi-level-nav{
+    height: 20px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 122px;
+    padding: 13px;
 }

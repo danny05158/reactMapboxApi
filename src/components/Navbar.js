@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-const Navbar = () => {
+const Navbar = (props) => {
 
-    return (
+  const [stations, setStations] = useState(false);
+
+  return (
       <div className="nav-mixed menu">
-        <nav id="multi-level-nav" className="multi-level-nav" role="navigation">
-          <button >Visible</button>
+        <nav className="multi-level-nav" role="navigation">
+          <button onClick={() => setStations(!stations)}>{stations ? 'View Stations' : 'Hide Stations'}</button>
         </nav>
       </div>
-    )
+  )
 };
 
 export default Navbar;

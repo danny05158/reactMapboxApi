@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import axios from 'axios';
 
-const Map = () => {
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnkwNTE1OCIsImEiOiJja3Ftb3VzNXgwZnEzMnVvODJnd2VtbXB1In0.Jaezz28sT9uSw-AAmDeJ7Q';
 
-  const [stations, setStations] = useState([]);
+const Map = (props) => {
+
+  const mapRef = useRef(null);
+  const [lon, seLon] = useState(-87.6298);
+  const [lat, setLat] = useState(41.8781);
+  const [zoom, setZoom] =  useState(10);
 
   useEffect(() => {
 
-    async function fetchData() {
-     const { data } = await axios.get('https://developer.nrel.gov/api/alt-fuel-stations/v1.json?api_key=hFaHfjnF0JwKMVnhxQdQbYVBKJLI84ldJA5eTMlZ&state=IL&fuel_type=ELEC');
-
-     console.log('data', data.fuel_stations)
-
-     setStations(data.fuel_stations);
-
-    }
-
-    fetchData();
-  }, []);
-
-  useEffect( () => {
-
-    console.log('stations', stations)
-
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnkwNTE1OCIsImEiOiJja3Ftb3VzNXgwZnEzMnVvODJnd2VtbXB1In0.Jaezz28sT9uSw-AAmDeJ7Q';
-     const stylesName = 'mapbox/light-v9';
-     const zoomScale = 10;
-
-    let map = new mapboxgl.Map({
-      container: 'map',
+    const map = new mapboxgl.Map({
+      container: mapRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-87.6298, 41.8781],
-      zoom: [zoomScale],
+      center: [lon, lat],
+      zoom: [zoom],
     });
 
     map.on( 'load', async () => {
@@ -43,7 +26,7 @@ const Map = () => {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: stations.map(station => {
+          features: props.state.chargingStations.map(station => {
             return {
               type: 'Feature',
               geometry: {
@@ -68,11 +51,17 @@ const Map = () => {
           },
       });
 
-      });
+    });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
   }, []);
 
-      return ( <div id="map" /> );
+      return (
+        <div className="mapWrapper">
+          <div id="map" ref={mapRef}/>
+        </div>
+      );
 };
 
 export default Map;
