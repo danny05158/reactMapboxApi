@@ -1,14 +1,25 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { displayData } from '../store';
 
 const Navbar = (props) => {
 
-  const [stations, setStations] = useState(false);
+  const handleClick = () => {
+    props.dispatch(displayData(!props.state.displayData));
+  }
 
   return (
       <div className="nav-mixed menu">
-        <nav className="multi-level-nav" role="navigation">
-          <button onClick={() => setStations(!stations)}>{stations ? 'View Stations' : 'Hide Stations'}</button>
-        </nav>
+          <div className="container" id="controller">
+              <h3>Display Data</h3>
+                  <div className="checkbox radio checked" id="paletteA-check">
+                    <span className="source">Primary</span>
+                  </div>
+              <h3>Data</h3>
+                <button className="radio checked" id="paletteA-check"
+                  onClick={() => handleClick()}>
+                  {props.state.displayData ? 'Hide' : 'Show'}
+                </button>
+          </div>
       </div>
   )
 };

@@ -1,17 +1,17 @@
-export const SET_CHARGING_STATIONS = 'SET_CHARGING_STATIONS';
+const DISPLAY_DATA = 'DISPLAY_DATA';
 
-export const setChargingStations = setChargingStations => ({
-  type: SET_CHARGING_STATIONS,
-  setChargingStations
-});
+export const displayData = displayData =>({
+  type: DISPLAY_DATA,
+  displayData
+})
 
 export const initialState = {
-  chargingStations: []
+  displayData: false
 }
 
 export const reducer = (state, action) => {
   switch(action.type){
-    case SET_CHARGING_STATIONS:
-      return {...state, chargingStations: action.setChargingStations}
+    case DISPLAY_DATA:
+      return {...state, displayData: action.displayData};
   }
 }

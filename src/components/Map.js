@@ -7,61 +7,73 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGFubnkwNTE1OCIsImEiOiJja3Ftb3VzNXgwZnEzMnVvO
 const Map = (props) => {
 
   const mapRef = useRef(null);
-  const [lon, seLon] = useState(-87.6298);
-  const [lat, setLat] = useState(41.8781);
-  const [zoom, setZoom] =  useState(10);
+  const [lon, seLon] = useState(-95.4);
+  const [lat, setLat] = useState(38);
+  const [zoom, setZoom] =  useState(3);
 
-  useEffect(() => {
+  let color = {
+      a: '#1a5fbc',
+      b: '#4f7acd',
+      c: '#7397dd',
+      d: '#93b4ee',
+      e: '#b2d3ff'
+  };
 
-    const map = new mapboxgl.Map({
+  useEffect((initLayers) => {
+
+    var map = new mapboxgl.Map({
       container: mapRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      style: 'mapbox://styles/mapbox/dark-v10',
       center: [lon, lat],
       zoom: [zoom],
     });
 
-    map.on( 'load', async () => {
+    map.on('load', initLayers = () => {
 
-      map.addSource('ev-charging-stations', {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: props.state.chargingStations.map(station => {
-            return {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: [station.longitude, station.latitude],
-              },
-            };
-          }),
-        },
-      });
+      	map.addSource('earthquakes', {
+          type: 'geojson',
+          // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+          // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+          data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson',
+          cluster: true,
+          clusterMaxZoom: 14, // Max zoom to cluster points on
+          clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+       });
 
-      map.addLayer({
-          id: 'allStations',
+       	map.addLayer({
+          id: 'clusters',
           type: 'circle',
-          source: 'ev-charging-stations',
-          layout: {
-            'visibility': 'visible',
-          },
+          source: 'earthquakes',
+          filter: ['has', 'point_count'],
+          // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+          // with three steps to implement three types of circles:
+          //   * Blue, 20px circles when point count is less than 100
+          //   * Yellow, 30px circles when point count is between 100 and 750
+          //   * Pink, 40px circles when point count is greater than or equal to 750
           paint: {
-            'circle-radius': 3,
-            'circle-color': '#B42222',
+            'circle-color': ['step', ['get', 'point_count'], color.a, 100, color.b, 750, color.c],
+            'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
           },
-      });
+          layout: {
+            visibility: 'none'
+          }
+	      });
+
+        if(props.state.displayData){
+          map.setLayoutProperty('clusters', 'visibility', 'visible');
+        }
 
     });
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-  }, []);
+  });
 
-      return (
-        <div className="mapWrapper">
-          <div id="map" ref={mapRef}/>
-        </div>
-      );
+  return (
+    <div className="mapWrapper">
+      <div id="map" ref={mapRef}/>
+    </div>
+  );
 };
 
 export default Map;
