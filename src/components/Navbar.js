@@ -9,13 +9,13 @@ const Navbar = (props) => {
 
   return (
       <div className="nav-mixed menu">
-          <div className="container" id="controller">
+          <div>
               <h3>Display Data</h3>
-                  <div className="checkbox radio checked" id="paletteA-check">
-                    <span className="source">Primary</span>
+                  <div>
+                    <span>Primary</span>
                   </div>
               <h3>Data</h3>
-                <button className="radio checked" id="paletteA-check"
+                <button
                   onClick={() => handleClick()}>
                   {props.state.displayData ? 'Hide' : 'Show'}
                 </button>
