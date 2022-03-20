@@ -1,11 +1,22 @@
 .nav-mixed {
-    height: 26%;
-    position: absolute;
-    left: 65%;
-    width: 26%;
-    padding: 13px;
-    z-index: 1;
-    border-radius: 6px;
-    top: 23px;
-    background: rgba(255, 255, 255, 0.60);
+  position: absolute;
+  left: 65%;
+  width: 150px;
+  padding: 13px;
+  z-index: 1;
+  border-radius: 6px;
+  top: 23px;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.nav-mixed > div > h3 {
+  margin-bottom: 0;
+}
+
+.nav-mixed-items {
+  display: flex;
+  flex-basis: 30px;
 }
